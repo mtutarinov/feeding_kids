@@ -1,0 +1,27 @@
+services:
+  backend:
+    restart: "unless-stopped"
+    build: .
+    image: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app/
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+    command: ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  db:
+    image: docker.io/postgres:alpine
+    restart: "unless-stopped"
+    ports:
+      - 5432:5432/tcp
+    environment:
+      - POSTGRES_USER=feeding_kids
+      - POSTGRES_PASSWORD=feeding_kids
+      - POSTGRES_DB=feeding_kids
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - ./.schemas:/var/lib/postgresql/data
