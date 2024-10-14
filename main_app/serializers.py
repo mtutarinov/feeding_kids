@@ -12,3 +12,8 @@ class DishSerializer(ModelSerializer):
     class Meta:
         model = Dish
         fields = ('product', 'name')
+
+class ShowDishSerializer(ModelSerializer):
+    class Meta:
+        model = Dish
+        fields = ('name', )
