@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Dish, Product
+from .models import Dish, Ingredient
 
 
-class ProductSerializer(ModelSerializer):
+class IngredientSerializer(ModelSerializer):
     class Meta:
-        model = Product
+        model = Ingredient
         fields = ('name',)
 
 

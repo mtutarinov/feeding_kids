@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from main_app.models import Product
+from main_app.models import Ingredient
 
 
 class Cart:
@@ -11,9 +11,9 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = list()
         self.cart = cart
 
-    def add(self, product_id):
-        if product_id not in self.cart:
-            self.cart.append(product_id)
+    def add(self, ingredient_id):
+        if ingredient_id not in self.cart:
+            self.cart.append(ingredient_id)
         self.save()
 
     def save(self):

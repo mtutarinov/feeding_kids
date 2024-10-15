@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 
-from main_app.models import Product, Dish
-from main_app.serializers import ProductSerializer, DishSerializer
+from main_app.models import Dish, Ingredient
+from main_app.serializers import IngredientSerializer, DishSerializer
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
 
 class DishViewSet(ModelViewSet):
