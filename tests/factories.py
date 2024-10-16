@@ -1,8 +1,24 @@
 import factory
 from faker import Faker
+from django.contrib.auth.models import User
 
 from main_app.models import Ingredient, Dish
 from food import ingredients, dishes, dish_descriptions
+from children.models import Child
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+
+class ChildFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Child
+
+    uuid = factory.Faker('uuid4')
+    name = factory.Faker('first_name')
+    age = 1
+    months = 2
+    mother = factory.SubFactory(UserFactory)
 
 class IngredientFactory(factory.django.DjangoModelFactory):
     class Meta:
