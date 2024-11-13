@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from main_app.models import Ingredient
+from food.models import Ingredient
 
 
 class Cart:

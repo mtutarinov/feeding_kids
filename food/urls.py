@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from main_app.views import ProductViewSet, DishViewSet
+from food.views import ProductViewSet, DishViewSet
 
 ingredient_router = SimpleRouter()
 ingredient_router.register(r'ingredients', ProductViewSet)

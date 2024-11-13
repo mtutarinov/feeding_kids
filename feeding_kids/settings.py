@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'main_app',
+    'food',
     'debug_toolbar',
     'children',
 ]

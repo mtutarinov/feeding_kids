@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main_app', '0004_alter_product_name'),
+        ('food', '0004_alter_product_name'),
     ]
 
     operations = [
@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='dish',
             name='product',
-            field=models.ManyToManyField(related_name='products', to='main_app.ingredient'),
+            field=models.ManyToManyField(related_name='products', to='food.ingredient'),
         ),
     ]

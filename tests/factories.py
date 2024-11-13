@@ -2,8 +2,8 @@ import factory
 from faker import Faker
 from django.contrib.auth.models import User
 
-from main_app.models import Ingredient, Dish
-from food import ingredients, dishes, dish_descriptions
+from food.models import Ingredient, Dish
+from faker_food import ingredients, dishes, dish_descriptions
 from children.models import Child
 
 class UserFactory(factory.django.DjangoModelFactory):
