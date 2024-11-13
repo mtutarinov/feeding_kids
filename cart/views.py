@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from cart.cart import Cart
-from main_app.models import Ingredient, Dish
-from main_app.serializers import ShowDishSerializer
+from food.models import Ingredient, Dish
+from food.serializers import ShowDishSerializer
 
 
 class CartAddView(APIView):

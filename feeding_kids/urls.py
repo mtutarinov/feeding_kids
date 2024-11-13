@@ -20,7 +20,7 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main_app.urls')),
+    path('', include('food.urls')),
     path('', include('cart.urls')),
     path('', include('children.urls')),
 ] + debug_toolbar_urls()

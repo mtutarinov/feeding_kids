@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Dish, Ingredient
+from food.models import Dish, Ingredient
 
 
 class IngredientSerializer(ModelSerializer):
@@ -11,7 +11,7 @@ class IngredientSerializer(ModelSerializer):
 class DishSerializer(ModelSerializer):
     class Meta:
         model = Dish
-        fields = ('product', 'name')
+        fields = ('name', 'ingredients', 'recipe')
 
 class ShowDishSerializer(ModelSerializer):
     class Meta:

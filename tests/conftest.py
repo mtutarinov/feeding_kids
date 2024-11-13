@@ -4,10 +4,12 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 
-from tests.factories import UserFactory, ChildFactory
+from tests.factories import UserFactory, ChildFactory, IngredientFactory, DishFactory
 
 register(UserFactory)
 register(ChildFactory)
+register(IngredientFactory)
+register(DishFactory)
 
 
 @pytest.fixture
@@ -38,3 +40,13 @@ def client(user: User) -> APIClient:
 @pytest.fixture
 def child(user: User):
     return ChildFactory.create(mother=user)
+
+
+@pytest.fixture
+def ingredient():
+    return IngredientFactory.create()
+
+@pytest.fixture
+def dish():
+    return DishFactory.create()
+

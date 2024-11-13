@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('product', models.ManyToManyField(related_name='products', to='main_app.product')),
+                ('product', models.ManyToManyField(related_name='products', to='food.product')),
             ],
         ),
     ]
