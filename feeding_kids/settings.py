@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'food',
     'debug_toolbar',
     'children',
+    'cart',
 ]
 
 MIDDLEWARE = [
