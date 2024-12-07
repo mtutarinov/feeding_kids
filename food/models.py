@@ -20,14 +20,11 @@ class DishRating(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # class Meta:
-    #     constraints = [
-    #         models.UniqueConstraint(fields=['user'], name='unique_user'),
-    #     ]
 
 class DishHistory(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='history')
     history = models.ManyToManyField('Dish', related_name='history')
+
 
 class DishChosen(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='chosen')
