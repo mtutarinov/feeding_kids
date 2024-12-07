@@ -25,7 +25,11 @@ class DishRating(models.Model):
     #         models.UniqueConstraint(fields=['user'], name='unique_user'),
     #     ]
 
+class DishHistory(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='history')
+    history = models.ManyToManyField('Dish', related_name='history')
 
-
-
+class DishChosen(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='chosen')
+    chosen = models.ManyToManyField('Dish', related_name='chosen')
 
