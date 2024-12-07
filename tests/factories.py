@@ -2,7 +2,7 @@ import factory
 from faker import Faker
 from django.contrib.auth.models import User
 
-from food.models import Ingredient, Dish
+from food.models import Ingredient, Dish, DishRating
 from faker_food import ingredients, dishes, dish_descriptions
 from children.models import Child
 
@@ -42,3 +42,10 @@ class DishFactory(factory.django.DjangoModelFactory):
 
         # Add the iterable of groups using bulk addition
         self.ingredients.add(*extracted)
+
+class DishRatingFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DishRating
+
+    dish = factory.SubFactory(DishFactory)
+    value = 0
