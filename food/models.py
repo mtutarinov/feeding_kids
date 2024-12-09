@@ -23,10 +23,10 @@ class DishRating(models.Model):
 
 class DishHistory(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='history')
-    history = models.ManyToManyField('Dish', related_name='history')
+    dish = models.ManyToManyField('Dish', related_name='history')
 
 
 class DishChosen(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='chosen')
-    chosen = models.ManyToManyField('Dish', related_name='chosen')
+    dish = models.ManyToManyField('Dish', related_name='chosen')
 
