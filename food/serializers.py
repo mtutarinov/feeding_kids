@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from food.models import Dish, Ingredient, DishRating
+from food.models import Dish, Ingredient, DishRating, DishHistory, DishChosen
 
 
 class IngredientSerializer(ModelSerializer):
@@ -24,3 +24,15 @@ class DishRatingSerializer(ModelSerializer):
     class Meta:
         model = DishRating
         fields = ('dish', 'value')
+
+
+class DishHistorySerializer(ModelSerializer):
+    class Meta:
+        model = DishHistory
+        fields = ('user', 'history')
+
+
+class DishChosenSerializer(ModelSerializer):
+    class Meta:
+        model = DishChosen
+        fields = ('user', 'chosen')
