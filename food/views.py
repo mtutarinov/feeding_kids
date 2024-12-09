@@ -9,7 +9,7 @@ from food.serializers import IngredientSerializer, DishSerializer, DishRatingSer
 from food.rating_services import rating_services
 
 
-class ProductViewSet(ModelViewSet):
+class IngredientViewSet(ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (IsAuthenticated, )
@@ -32,21 +32,24 @@ class DishHistoryView(APIView):
 
     def get(self, request):
         history = DishHistory.objects.get(user=request.user)
-        return Response({'history': DishHistorySerializer(history, many=True).data})
+        return Response({'history': DishHistorySerializer(history).data})
+
 
     def put(self, request, pk):
         history = DishHistory.objects.get(user=request.user)
-        history.history.add(pk)
-        return Response({'history': DishHistorySerializer(history, many=True).data})
+        history.dish.add(pk)
+        return Response({'history': DishHistorySerializer(history).data})
+
 
 class DishChosenView(APIView):
     permission_classes = (IsAuthenticated, )
 
+
     def get(self, request):
         chosen = DishChosen.objects.get(user=request.user)
-        return Response({'chosen': DishChosenSerializer(chosen, many=True).data})
+        return Response({'chosen': DishChosenSerializer(chosen).data})
 
     def put(self, request, pk):
         chosen = DishChosen.objects.get(user=request.user)
-        chosen.chosen.add(pk)
-        return Response({'chosen': DishChosenSerializer(chosen, many=True).data})
+        chosen.dish.add(pk)
+        return Response({'chosen': DishChosenSerializer(chosen).data})

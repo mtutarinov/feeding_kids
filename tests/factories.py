@@ -2,7 +2,7 @@ import factory
 from faker import Faker
 from django.contrib.auth.models import User
 
-from food.models import Ingredient, Dish, DishRating
+from food.models import Ingredient, Dish, DishRating, DishHistory, DishChosen
 from faker_food import ingredients, dishes, dish_descriptions
 from children.models import Child
 
@@ -49,3 +49,35 @@ class DishRatingFactory(factory.django.DjangoModelFactory):
 
     dish = factory.SubFactory(DishFactory)
     value = 0
+
+
+class DishHistoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DishHistory
+
+    user = factory.SubFactory(UserFactory)
+
+    @factory.post_generation
+    def dish(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            # Simple build, or nothing to add, do nothing.
+            return
+
+        # Add the iterable of groups using bulk addition
+        self.dish.add(*extracted)
+
+
+class DishChosenFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DishChosen
+
+    user = factory.SubFactory(UserFactory)
+
+    @factory.post_generation
+    def dish(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            # Simple build, or nothing to add, do nothing.
+            return
+
+        # Add the iterable of groups using bulk addition
+        self.dish.add(*extracted)

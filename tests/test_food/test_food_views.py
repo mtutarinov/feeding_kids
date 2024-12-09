@@ -1,13 +1,17 @@
+from http.client import responses
+
 import pytest
 from rest_framework import status
 
 from faker_food import ingredients
 from food.models import Ingredient, Dish
-from tests.conftest import ingredient
-from tests.factories import IngredientFactory, DishFactory
+from tests.conftest import ingredient, anon_client, client
+from tests.factories import IngredientFactory, DishFactory, DishHistoryFactory
 
 INGREDIENT_LIST_URL = '/api/v1/ingredients/'
 DISH_LIST_URL = '/api/v1/dishes/'
+DISH_HISTORY = '/api/v1/history/'
+DISH_CHOSEN = '/api/v1/chosen/'
 
 
 @pytest.mark.django_db
@@ -257,3 +261,67 @@ def test_dish_rating_anon_client(client, dish):
     response_b = client.post(f"/api/v1/rating/{dish.id}/")
     assert response_b.status_code == status.HTTP_200_OK
     assert response_b.data['response'] == "Dish rating 0"
+
+
+@pytest.mark.django_db
+def test_dish_history_detail_anon_client(anon_client):
+    response = anon_client.get(DISH_HISTORY)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_dish_history_detail_client(client):
+    response = client.get(DISH_HISTORY)
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data['history']) == 2
+    assert response.data['history']['user'] == client.user.id
+    assert len(response.data['history']['dish']) == 0
+    assert response.data['history']['dish'] == []
+
+
+@pytest.mark.django_db
+def test_dish_history_put_anon_client(anon_client, dish):
+    response = anon_client.put(DISH_HISTORY + f'{dish.id}/')
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_dish_history_put_client(client, dish):
+    response = client.put(DISH_HISTORY + f'{dish.id}/')
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data['history']) == 2
+    assert response.data['history']['user'] == client.user.id
+    assert len(response.data['history']['dish']) == 1
+    assert response.data['history']['dish'] == [dish.id]
+
+
+@pytest.mark.django_db
+def test_dish_chosen_detail_anon_client(anon_client):
+    response = anon_client.get(DISH_CHOSEN)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_dish_chosen_detail_client(client):
+    response = client.get(DISH_CHOSEN)
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data['chosen']) == 2
+    assert response.data['chosen']['user'] == client.user.id
+    assert len(response.data['chosen']['dish']) == 0
+    assert response.data['chosen']['dish'] == []
+
+
+@pytest.mark.django_db
+def test_dish_chosen_put_anon_client(anon_client, dish):
+    response = anon_client.put(DISH_CHOSEN + f'{dish.id}/')
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_dish_chosen_put_client(client, dish):
+    response = client.put(DISH_CHOSEN + f'{dish.id}/')
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data['chosen']) == 2
+    assert response.data['chosen']['user'] == client.user.id
+    assert len(response.data['chosen']['dish']) == 1
+    assert response.data['chosen']['dish'] == [dish.id]

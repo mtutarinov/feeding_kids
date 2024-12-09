@@ -29,10 +29,10 @@ class DishRatingSerializer(ModelSerializer):
 class DishHistorySerializer(ModelSerializer):
     class Meta:
         model = DishHistory
-        fields = ('user', 'history')
+        fields = ('user', 'dish')
 
 
 class DishChosenSerializer(ModelSerializer):
     class Meta:
         model = DishChosen
-        fields = ('user', 'chosen')
+        fields = ('user', 'dish')
