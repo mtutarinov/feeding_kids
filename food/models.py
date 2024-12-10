@@ -5,10 +5,17 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
 class Dish(models.Model):
+    TYPE_CHOICES = (
+        ('breakfast', 'завтрак'),
+        ('dinner', 'обед'),
+        ('dinner', 'ужин')
+    )
+
     name = models.CharField(max_length=255)
-    ingredients = models.ManyToManyField('ingredient', related_name='products')
+    ingredients = models.ManyToManyField('ingredient', related_name='dishes')
     recipe = models.CharField(max_length=255, blank=True)
     description = models.CharField(max_length=255, blank=True)
+    type = models.CharField(choices=TYPE_CHOICES, default='breakfast', max_length=16)
 
 
 class DishRatingSummary(models.Model):
