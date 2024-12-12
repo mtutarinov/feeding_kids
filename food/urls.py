@@ -12,16 +12,14 @@ ingredient_router = SimpleRouter()
 ingredient_router.register(r'ingredients', IngredientViewSet)
 dish_router = SimpleRouter()
 dish_router.register('dishes', DishViewSet)
-from food.views import DishRatingView, DishHistoryView, DishChosenView
+from food.views import DishRatingView, DishHistoryView, DishFavourView
 
 urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/', include(ingredient_router.urls)),
     path('api/v1/', include(dish_router.urls)),
-    path('api/v1/rating/<int:pk>/', DishRatingView.as_view()),
+    path('api/v1/rating/', DishRatingView.as_view()),
     path('api/v1/history/', DishHistoryView.as_view()),
-    path('api/v1/history/<int:pk>/', DishHistoryView.as_view()),
-    path('api/v1/chosen/', DishChosenView.as_view()),
-    path('api/v1/chosen/<int:pk>/', DishChosenView.as_view()),
+    path('api/v1/favourite/', DishFavourView.as_view()),
 ]

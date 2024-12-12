@@ -1,9 +1,7 @@
 import pytest
 from rest_framework import status
-from django.contrib.auth.models import User
 
 from children.models import Child
-from tests.factories import UserFactory, ChildFactory
 
 CHILDREN_LIST_URL = "/api/v1/children/"
 

@@ -26,13 +26,13 @@ class DishRatingManager:
         return total_like.value
 
 
-def rating_services(id: id, user: User) -> int:
+def rate_dish(dish_id: int, user: User) -> int:
     """Функция для вызова DishRatingManager."""
     try:
-        total_like = DishRatingSummary.objects.get(dish_id=id)
+        total_like = DishRatingSummary.objects.get(dish_id=dish_id)
     except ObjectDoesNotExist:
-        total_like = DishRatingSummary.objects.create(dish_id=id)
-    like, created = DishRating.objects.get_or_create(user=user, dish_id=id)
+        total_like = DishRatingSummary.objects.create(dish_id=dish_id)
+    like, created = DishRating.objects.get_or_create(user=user, dish_id=dish_id)
     if created:
         DishRatingManager.add_dish_rating(total_like)
     else:
