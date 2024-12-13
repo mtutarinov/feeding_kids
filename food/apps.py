@@ -5,5 +5,5 @@ class MainAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'food'
 
-    def ready(self):
-        import food.signals
+    # def ready(self):
+    #     import food.signals

@@ -36,10 +36,15 @@ class DishRating(models.Model):
 
 class DishHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='history')
-    dish = models.ForeignKey('Dish', related_name='history', on_delete=models.CASCADE)
+    dish = models.ForeignKey('Dish', related_name='history', on_delete=models.CASCADE, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'dish'], name='uniq_history'),
+        ]
 
 
 class DishFavourite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourite')
-    dish = models.ForeignKey('Dish', related_name='favourite', on_delete=models.CASCADE)
+    dish = models.ForeignKey('Dish', related_name='favourite', on_delete=models.CASCADE, blank=True)
 
