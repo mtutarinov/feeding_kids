@@ -7,7 +7,7 @@ from food.models import Dish, Ingredient, DishHistory, DishFavourite
 from food.serializers import IngredientSerializer, DishSerializer, DishHistorySerializer, DishFavouriteSerializer
 from food.services.rating import rate_dish
 from food.services.history_favorite import HistoryManager, FavouriteManager
-from food.filters import DishTypeFilter
+# from food.filters import DishTypeFilter
 
 class IngredientViewSet(ModelViewSet):
     queryset = Ingredient.objects.all()
@@ -20,7 +20,7 @@ class DishViewSet(ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Dish.objects.all()
     serializer_class = DishSerializer
-    filterset_class = DishTypeFilter
+    # filterset_class = DishTypeFilter
 
 
 
