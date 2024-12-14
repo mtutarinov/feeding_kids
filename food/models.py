@@ -1,7 +1,10 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 
 class Ingredient(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=255, unique=True)
 
 class Dish(models.Model):
@@ -11,7 +14,7 @@ class Dish(models.Model):
         (2, 'обед'),
         (3, 'ужин')
     )
-
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=255)
     ingredients = models.ManyToManyField('ingredient', related_name='dishes')
     recipe = models.CharField(max_length=255, blank=True)
