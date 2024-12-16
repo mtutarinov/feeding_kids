@@ -51,3 +51,8 @@ class DishFavourite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourite')
     dish = models.ForeignKey('Dish', related_name='favourite', on_delete=models.CASCADE, blank=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'dish'], name='uniq_favourite'),
+        ]
+

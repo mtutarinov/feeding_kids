@@ -10,19 +10,18 @@ class DishRatingManager:
     @staticmethod
     def add_dish_rating(total_like: DishRatingSummary):
         """Увеличивает рейтинг."""
-        total_like.value = F('value') + 1
-        total_like.save()
+        total_like.value += 1
+        total_like.save(update_fields=['value'])
 
     @staticmethod
     def down_dish_rating(total_like: DishRatingSummary):
         """Уменьшает рейтинг."""
-        total_like.value = F('value') - 1
-        total_like.save()
+        total_like.value -= 1
+        total_like.save(update_fields=['value'])
 
     @staticmethod
     def get_dish_rating(total_like: DishRatingSummary) -> int:
         """Возвращает рейтинг."""
-        total_like.refresh_from_db()
         return total_like.value
 
 
