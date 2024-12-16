@@ -23,11 +23,13 @@ class Dish(models.Model):
 
 
 class DishRatingSummary(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     dish = models.OneToOneField(Dish, on_delete=models.CASCADE, related_name='rating')
     value = models.IntegerField(default=0)
 
 
 class DishRating(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -38,6 +40,7 @@ class DishRating(models.Model):
 
 
 class DishHistory(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='history')
     dish = models.ForeignKey('Dish', related_name='history', on_delete=models.CASCADE, blank=True)
 
@@ -48,6 +51,7 @@ class DishHistory(models.Model):
 
 
 class DishFavourite(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourite')
     dish = models.ForeignKey('Dish', related_name='favourite', on_delete=models.CASCADE, blank=True)
 
