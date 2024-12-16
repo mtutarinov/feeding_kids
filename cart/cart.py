@@ -4,7 +4,9 @@ from food.models import Ingredient
 
 
 class Cart:
+    """Осуществляет функционал корзины."""
     def __init__(self, request):
+        """Инициализация."""
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
@@ -12,6 +14,7 @@ class Cart:
         self.cart = cart
 
     def add(self, ingredient_id):
+
         if ingredient_id not in self.cart:
             self.cart.append(ingredient_id)
         self.save()
