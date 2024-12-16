@@ -7,6 +7,12 @@ class Ingredient(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=255, unique=True)
 
+
+class Allergen(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='allergens')
+
 class Dish(models.Model):
 
     TYPE_CHOICES = (
