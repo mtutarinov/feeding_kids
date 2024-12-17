@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from cart.cart import Cart
+from cart.dish_constructor import DishConstructor
 from food.models import Ingredient, Dish
 from food.serializers import ShowDishSerializer
 
@@ -31,5 +32,5 @@ class ShowDishView(APIView):
     def get(self, request):
         cart = Cart(request)
         ingredients_ids = cart.cart
-        dish = Dish.objects.filter(ingredients__id__in=ingredients_ids).distinct()
+        dish = DishConstructor.get(ingredients_ids)
         return Response({'dishes': ShowDishSerializer(dish, many=True).data})

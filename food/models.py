@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
+from children.models import Child
+
 class Ingredient(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=255, unique=True)
@@ -11,7 +13,7 @@ class Ingredient(models.Model):
 class Allergen(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
     name = models.CharField(max_length=255, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='allergens')
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='allergens')
 
 class Dish(models.Model):
 
