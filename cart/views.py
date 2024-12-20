@@ -1,29 +1,28 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from cart.cart import Cart
 from cart.dish_constructor import DishConstructor
-from food.models import Ingredient, Dish
 from food.serializers import ShowDishSerializer
 
 
-class CartAddView(APIView):
+class CartView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, pk):
+    def post(self, request):
         cart = Cart(request)
-        cart.add(pk)
-        return Response('Товар добавлен в корзину.')
-
-
-class ShowCartView(APIView):
-    permission_classes = (IsAuthenticated,)
+        cart.add(request.data["ingredients_id"])
+        return Response("Ингредиент добавлен в корзину.")
 
     def get(self, request):
         cart = Cart(request)
         return Response(cart.cart)
+
+    def delete(self, request):
+        cart = Cart(request)
+        cart.remove(request.data["ingredients_id"])
+        return Response("Ингредиент удален из корзины.")
 
 
 class ShowDishView(APIView):
@@ -31,6 +30,7 @@ class ShowDishView(APIView):
 
     def get(self, request):
         cart = Cart(request)
-        ingredients_ids = cart.cart
-        dish = DishConstructor.get(ingredients_ids)
-        return Response({'dishes': ShowDishSerializer(dish, many=True).data})
+        available_ids = cart.cart
+        # child =
+        result = DishConstructor.get(available_ids)
+        return Response({"dishes": ShowDishSerializer(result, many=True).data})

@@ -1,9 +1,10 @@
 import uuid
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from children.models import Child
+
 
 class Ingredient(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
@@ -11,20 +12,20 @@ class Ingredient(models.Model):
 
 
 class Allergen(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
-    name = models.CharField(max_length=255, unique=True)
-    child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='allergens')
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    ingredient = models.ForeignKey(
+        Ingredient, related_name="ingredients", on_delete=models.CASCADE
+    )
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name="allergens")
+
+    # constraints
+
 
 class Dish(models.Model):
-
-    TYPE_CHOICES = (
-        (1, 'завтрак'),
-        (2, 'обед'),
-        (3, 'ужин')
-    )
+    TYPE_CHOICES = ((1, "завтрак"), (2, "обед"), (3, "ужин"))
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=255)
-    ingredients = models.ManyToManyField('ingredient', related_name='dishes')
+    ingredients = models.ManyToManyField("ingredient", related_name="dishes")
     recipe = models.CharField(max_length=255, blank=True)
     description = models.CharField(max_length=255, blank=True)
     type = models.SmallIntegerField(choices=TYPE_CHOICES, default=1, db_index=True)
@@ -32,7 +33,7 @@ class Dish(models.Model):
 
 class DishRatingSummary(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
-    dish = models.OneToOneField(Dish, on_delete=models.CASCADE, related_name='rating')
+    dish = models.OneToOneField(Dish, on_delete=models.CASCADE, related_name="rating")
     value = models.IntegerField(default=0)
 
 
@@ -43,28 +44,31 @@ class DishRating(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'dish'], name='uniq_user_dish'),
+            models.UniqueConstraint(fields=["user", "dish"], name="uniq_user_dish"),
         ]
 
 
 class DishHistory(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='history')
-    dish = models.ForeignKey('Dish', related_name='history', on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="history")
+    dish = models.ForeignKey(
+        "Dish", related_name="history", on_delete=models.CASCADE, blank=True
+    )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'dish'], name='uniq_history'),
+            models.UniqueConstraint(fields=["user", "dish"], name="uniq_history"),
         ]
 
 
 class DishFavourite(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourite')
-    dish = models.ForeignKey('Dish', related_name='favourite', on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favourite")
+    dish = models.ForeignKey(
+        "Dish", related_name="favourite", on_delete=models.CASCADE, blank=True
+    )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'dish'], name='uniq_favourite'),
+            models.UniqueConstraint(fields=["user", "dish"], name="uniq_favourite"),
         ]
-
