@@ -18,7 +18,12 @@ class Allergen(models.Model):
     )
     child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name="allergens")
 
-    # constraints
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["ingredient", "child"], name="uniq_ingredient_child"
+            ),
+        ]
 
 
 class Dish(models.Model):

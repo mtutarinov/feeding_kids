@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from cart.cart import Cart
 from cart.dish_constructor import DishConstructor
+from food.models import Allergen
 from food.serializers import ShowDishSerializer
 
 
@@ -31,6 +32,9 @@ class ShowDishView(APIView):
     def get(self, request):
         cart = Cart(request)
         available_ids = cart.cart
-        # child =
-        result = DishConstructor.get(available_ids)
+        allergens = Allergen.objects.filter(child=request.data["child"]).values(
+            "ingredient_id"
+        )
+        allergens_ids = [allergen["ingredient_id"] for allergen in allergens]
+        result = DishConstructor.get(available_ids, allergens_ids)
         return Response({"dishes": ShowDishSerializer(result, many=True).data})
