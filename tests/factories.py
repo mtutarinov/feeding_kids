@@ -1,24 +1,35 @@
 import factory
-from faker import Faker
 from django.contrib.auth.models import User
 
-from food.models import Ingredient, Dish, DishRating, DishHistory, DishChosen
-from faker_food import ingredients, dishes, dish_descriptions
 from children.models import Child
+from faker_food import dish_descriptions, dishes, ingredients
+from food.models import (
+    Allergen,
+    Dish,
+    DishFavourite,
+    DishHistory,
+    DishRating,
+    Ingredient,
+)
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
+    username = factory.Faker("user_name")
+
+
 class ChildFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Child
 
-    uuid = factory.Faker('uuid4')
-    name = factory.Faker('first_name')
+    uuid = factory.Faker("uuid4")
+    name = factory.Faker("first_name")
     age = 1
     months = 2
     mother = factory.SubFactory(UserFactory)
+
 
 class IngredientFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -42,6 +53,7 @@ class DishFactory(factory.django.DjangoModelFactory):
 
         # Add the iterable of groups using bulk addition
         self.ingredients.add(*extracted)
+
 
 class DishRatingFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -67,9 +79,9 @@ class DishHistoryFactory(factory.django.DjangoModelFactory):
         self.dish.add(*extracted)
 
 
-class DishChosenFactory(factory.django.DjangoModelFactory):
+class DishFavouriteFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = DishChosen
+        model = DishFavourite
 
     user = factory.SubFactory(UserFactory)
 
@@ -81,3 +93,12 @@ class DishChosenFactory(factory.django.DjangoModelFactory):
 
         # Add the iterable of groups using bulk addition
         self.dish.add(*extracted)
+
+
+class AllergenFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Allergen
+
+    uuid = factory.Faker("uuid4")
+    ingredient = factory.SubFactory(IngredientFactory)
+    child = factory.SubFactory(ChildFactory)

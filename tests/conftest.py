@@ -1,18 +1,26 @@
 import pytest
+from django.contrib.auth.models import User
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.models import User
 
-from tests.factories import UserFactory, ChildFactory, IngredientFactory, DishFactory, DishHistoryFactory, \
-    DishChosenFactory
+from tests.factories import (
+    AllergenFactory,
+    ChildFactory,
+    DishFactory,
+    DishFavouriteFactory,
+    DishHistoryFactory,
+    IngredientFactory,
+    UserFactory,
+)
 
 register(UserFactory)
 register(ChildFactory)
 register(IngredientFactory)
 register(DishFactory)
 register(DishHistoryFactory)
-register(DishChosenFactory)
+register(DishFavouriteFactory)
+register(AllergenFactory)
 
 
 @pytest.fixture
@@ -55,3 +63,6 @@ def dish():
     return DishFactory.create()
 
 
+@pytest.fixture
+def allergen(child, ingredient):
+    return AllergenFactory.create(child=child, ingredient=ingredient)

@@ -1,16 +1,19 @@
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from food.filters import DishTypeFilter
-from food.models import Dish, Ingredient
+from food.models import Allergen, Dish, Ingredient
 from food.serializers import (
+    AllergenSerializer,
     DishFavouriteSerializer,
     DishHistorySerializer,
     DishSerializer,
     IngredientSerializer,
 )
+from food.services.allergen import check_user_children
 from food.services.history_favorite import FavouriteManager, HistoryManager
 from food.services.rating import rate_dish
 
@@ -77,3 +80,34 @@ class DishFavouriteView(APIView):
         return Response(
             {"favourite": DishFavouriteSerializer(favourite, many=True).data}
         )
+
+
+class AllergenViewSet(ModelViewSet):
+    queryset = Allergen.objects.all()
+    serializer_class = AllergenSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        if check_user_children(self.request.user, self.kwargs["child_id"]):
+            return Allergen.objects.filter(child_id=self.kwargs["child_id"])
+        raise PermissionDenied("Вы можете просматривать аллергены только своих детей.")
+
+    def create(self, request, *args, **kwargs):
+        if check_user_children(request.user, self.kwargs["child_id"]):
+            return super().create(request, *args, **kwargs)
+        raise PermissionDenied("Вы можете создавать аллергены только для своих детей.")
+
+    def destroy(self, request, *args, **kwargs):
+        if check_user_children(request.user, self.kwargs["child_id"]):
+            return super().destroy(request, *args, **kwargs)
+        raise PermissionDenied("Вы можете удалять аллергены только своих детей.")
+
+    def update(self, request, *args, **kwargs):
+        if check_user_children(request.user, self.kwargs["child_id"]):
+            return super().retrieve(request, *args, **kwargs)
+        raise PermissionDenied("Вы можете изменять аллергены только своих детей")
+
+    def partial_update(self, request, *args, **kwargs):
+        if check_user_children(request.user, self.kwargs["child_id"]):
+            return super().partial_update(request, *args, **kwargs)
+        raise PermissionDenied("Вы можете изменять аллергены только своих детей")
