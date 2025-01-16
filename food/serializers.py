@@ -1,7 +1,14 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from food.models import Dish, DishFavourite, DishHistory, DishRating, Ingredient
+from food.models import (
+    Allergen,
+    Dish,
+    DishFavourite,
+    DishHistory,
+    DishRating,
+    Ingredient,
+)
 
 
 class IngredientSerializer(ModelSerializer):
@@ -30,13 +37,16 @@ class ShowDishSerializer(ModelSerializer):
             "total_ingredients",
         )
 
-    def get_allergen_ingredients(self, obj):
+    @staticmethod
+    def get_allergen_ingredients(obj):
         return obj.allergen_ingredients
 
-    def get_matched_ingredients(self, obj):
+    @staticmethod
+    def get_matched_ingredients(obj):
         return obj.matched_ingredients
 
-    def get_total_ingredients(self, obj):
+    @staticmethod
+    def get_total_ingredients(obj):
         return obj.total_ingredients
 
 
@@ -56,3 +66,9 @@ class DishFavouriteSerializer(ModelSerializer):
     class Meta:
         model = DishFavourite
         fields = ("user", "dish")
+
+
+class AllergenSerializer(ModelSerializer):
+    class Meta:
+        model = Allergen
+        fields = ("uuid", "ingredient", "child")
