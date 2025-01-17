@@ -19,10 +19,8 @@ class DishConstructor:
                 total_ingredients=Count("ingredients"),
             )
             .filter(matched_ingredients__gte=1)
-            .order_by("allergen_ingredients")
+            .order_by(
+                "allergen_ingredients", "-matched_ingredients", "total_ingredients"
+            )
         )
         return dishes
-
-
-# x = "-matched_ingredients"
-# y = "total_ingredients"
