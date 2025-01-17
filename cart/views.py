@@ -26,10 +26,10 @@ class CartView(APIView):
         return Response("Ингредиент удален из корзины.")
 
 
-class ShowDishView(APIView):
+class DishConstructorView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request):
+    def post(self, request):
         cart = Cart(request)
         available_ids = cart.cart
         allergens = Allergen.objects.filter(child=request.data["child"]).values(
